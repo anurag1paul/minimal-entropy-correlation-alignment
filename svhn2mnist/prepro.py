@@ -2,14 +2,13 @@ import numpy as np
 import pickle
 from PIL import Image
 from tensorflow.examples.tutorials.mnist import input_data
-#~ import scipy.io
-#~ import glob
 
-def resize_images(image_arrays, size=[32, 32]):
+
+def resize_images(image_arrays, size=(32, 32)):
     # convert float type to integer 
     image_arrays = (image_arrays * 255).astype('uint8')
     
-    resized_image_arrays = np.zeros([image_arrays.shape[0]]+size)
+    resized_image_arrays = np.zeros([image_arrays.shape[0]]+list(size))
     for i, image_array in enumerate(image_arrays):
         image = Image.fromarray(image_array)
         resized_image = image.resize(size=size, resample=Image.ANTIALIAS)
@@ -31,11 +30,6 @@ def main():
     
     test = {'X': resize_images(mnist.test.images.reshape(-1, 28, 28)),
             'y': mnist.test.labels}
-    #~ train = {'X': mnist.train.images,
-             #~ 'y': mnist.train.labels}
-    
-    #~ test = {'X': mnist.test.images,
-            #~ 'y': mnist.test.labels}
         
     save_pickle(train, 'mnist/train.pkl')
     save_pickle(test, 'mnist/test.pkl')

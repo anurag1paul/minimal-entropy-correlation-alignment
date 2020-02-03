@@ -1,6 +1,6 @@
 import tensorflow as tf
-from .model import logDcoral
-from .solver import Solver
+from svhn2mnist.model import logDcoral
+from svhn2mnist.solver import Solver
 
 flags = tf.compat.v1.flags
 flags.DEFINE_string('mode', 'train', "'train', or 'test'")
