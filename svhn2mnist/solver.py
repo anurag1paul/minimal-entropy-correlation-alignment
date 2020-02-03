@@ -208,9 +208,9 @@ class Solver(object):
 
                 fx_src = np.vstack((fx_src, np.squeeze(fx_src_)))
                 fx_trg = np.vstack((fx_trg, np.squeeze(fx_trg_)))
-
-                src_labels = np.argmax(src_labels, 1)
-                trg_labels = np.argmax(trg_labels, 1)
+            
+            src_labels = np.argmax(src_labels, 1)
+            trg_labels = np.argmax(trg_labels, 1)
 
             assert len(src_labels) == len(fx_src)
             assert len(trg_labels) == len(fx_trg)
@@ -219,18 +219,23 @@ class Solver(object):
 
             model = TSNE(n_components=2, random_state=0)
 
-            TSNE_hA = model.fit_transform(np.vstack((fx_src, fx_trg)))
+            TSNE_hA = model.fit_transform(fx_src)
+
+            print(TSNE_hA.shape, fx_src.shape, fx_trg.shape)
+            plt.figure(1)
+            plt.scatter(TSNE_hA[:, 0], TSNE_hA[:, 1],
+                        c=src_labels, s=3,
+                        cmap=mpl.cm.jet)
+            plt.savefig("tsne_src.png")
+            
+            model = TSNE(n_components=2, random_state=0)
+
+            TSNE_hA = model.fit_transform(fx_trg)
             plt.figure(2)
             plt.scatter(TSNE_hA[:, 0], TSNE_hA[:, 1],
-                        c=np.hstack((src_labels, trg_labels,)), s=3,
+                        c=trg_labels, s=3,
                         cmap=mpl.cm.jet)
-            plt.figure(3)
-            plt.scatter(TSNE_hA[:, 0], TSNE_hA[:, 1], c=np.hstack(
-                (np.ones((n_samples,)), 2 * np.ones((n_samples,)))), s=3,
-                        cmap=mpl.cm.jet)
-
-            plt.show()
-
+            plt.savefig("tsne_trg.png")
 
 if __name__ == '__main__':
     print('empty')
